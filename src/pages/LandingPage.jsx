@@ -24,7 +24,7 @@ const RECENT_LISTINGS = [
 ];
 
 export default function LandingPage() {
-  const { theme, toggleTheme, lang, tr } = useApp();
+  const { theme, toggleTheme, lang, toggleLang, tr } = useApp();
   const navigate = useNavigate();
 
   return (
