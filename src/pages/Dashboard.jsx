@@ -171,7 +171,7 @@ export default function Dashboard() {
             {tr('dash_full_report')} <ArrowRight size={14} />
           </button>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+        <div className="dash-impact-grid" style={{ gap: '16px' }}>
           {[
             { label: tr('dash_total_listed'), value: stats.totalMaterials },
             { label: tr('dash_materials_received'), value: stats.materialsReceived },

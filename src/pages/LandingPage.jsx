@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Leaf, Sun, Moon, ArrowRight, RotateCcw, Zap, Shield, Globe, ChevronDown } from 'lucide-react';
 import { useApp } from '../context/AppContext';
@@ -34,16 +33,16 @@ export default function LandingPage() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         background: 'var(--glass)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--glass-border)',
-        padding: '0 40px', height: '64px',
+        padding: '0 16px', height: '60px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '34px', height: '34px', background: 'var(--accent)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Leaf size={18} color="#0f1410" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', background: 'var(--accent)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Leaf size={16} color="#0f1410" />
           </div>
-          <span style={{ fontWeight: 800, fontSize: '18px', letterSpacing: '-0.3px' }}>MaterialMatch</span>
+          <span style={{ fontWeight: 800, fontSize: '16px', letterSpacing: '-0.3px' }}>MaterialMatch</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="landing-nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <button
             className="btn btn-ghost btn-sm"
             style={{ fontSize: '12px', fontWeight: 700 }}
@@ -54,7 +53,7 @@ export default function LandingPage() {
           <button onClick={toggleTheme} className="btn btn-ghost btn-sm" style={{ padding: '8px' }}>
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate('/login')}>
+          <button className="btn btn-ghost btn-sm landing-login-btn" onClick={() => navigate('/login')}>
             {lang === 'hi' ? 'लॉग इन' : 'Log In'}
           </button>
           <button className="btn btn-primary btn-sm" onClick={() => navigate('/register')}>
@@ -66,7 +65,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section style={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '80px 40px 40px', position: 'relative', overflow: 'hidden',
+        padding: '80px 20px 40px', position: 'relative', overflow: 'hidden',
       }}>
         <div style={{
           position: 'absolute', inset: 0,
@@ -76,7 +75,7 @@ export default function LandingPage() {
         }} />
 
         <div style={{ maxWidth: '1100px', width: '100%', position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+          <div className="landing-hero-grid">
             <div className="animate-fade-up">
               <div style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
@@ -120,7 +119,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="animate-fade-up stagger-2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="animate-fade-up stagger-2 landing-hero-graphic" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <CircularGraphic lang={lang} />
             </div>
           </div>
@@ -133,7 +132,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section style={{ padding: '80px 40px', background: 'var(--bg-secondary)' }}>
+      <section style={{ padding: '80px 20px', background: 'var(--bg-secondary)' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '56px' }}>
             <h2 style={{ fontSize: '36px', fontWeight: 800, letterSpacing: '-1px', marginBottom: '12px' }}>{tr('landing_how_it_works')}</h2>
@@ -158,9 +157,9 @@ export default function LandingPage() {
       </section>
 
       {/* Why MaterialMatch */}
-      <section style={{ padding: '80px 40px' }}>
+      <section style={{ padding: '80px 20px' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+          <div className="landing-why-grid">
             <div>
               <h2 style={{ fontSize: '36px', fontWeight: 800, letterSpacing: '-1px', marginBottom: '20px' }}>
                 {tr('landing_why')}
@@ -185,7 +184,7 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="landing-stats-grid">
               {[
                 { value: '286 kg', labelKey: 'landing_total_reused',  color: 'var(--accent)' },
                 { value: '14',     labelKey: 'landing_orgs_active',    color: 'var(--green)' },
@@ -203,7 +202,7 @@ export default function LandingPage() {
       </section>
 
       {/* Material Categories */}
-      <section style={{ padding: '80px 40px', background: 'var(--bg-secondary)' }}>
+      <section style={{ padding: '80px 20px', background: 'var(--bg-secondary)' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
             <h2 style={{ fontSize: '36px', fontWeight: 800, letterSpacing: '-1px', marginBottom: '12px' }}>{tr('landing_categories')}</h2>
@@ -222,9 +221,9 @@ export default function LandingPage() {
       </section>
 
       {/* Recent Listings */}
-      <section style={{ padding: '80px 40px' }}>
+      <section style={{ padding: '80px 20px' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+          <div className="landing-section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', flexWrap: 'wrap', gap: '16px' }}>
             <div>
               <h2 style={{ fontSize: '36px', fontWeight: 800, letterSpacing: '-1px', marginBottom: '6px' }}>{tr('landing_recent')}</h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>{tr('landing_recent_desc')}</p>
@@ -253,7 +252,7 @@ export default function LandingPage() {
       </section>
 
       {/* SDG 12 */}
-      <section style={{ padding: '80px 40px', background: 'var(--bg-secondary)' }}>
+      <section style={{ padding: '80px 20px', background: 'var(--bg-secondary)' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--accent-dim)', border: '1px solid var(--glass-border)', borderRadius: '20px', padding: '6px 16px', marginBottom: '24px' }}>
             <Globe size={14} color="var(--accent)" />
@@ -265,7 +264,7 @@ export default function LandingPage() {
           <p style={{ fontSize: '16px', color: 'var(--text-muted)', lineHeight: '1.8', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px' }}>
             {tr('landing_sdg_body')}
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '48px' }}>
+          <div className="landing-sdg-grid" style={{ marginBottom: '48px' }}>
             {[
               ['12.2', lang === 'hi' ? 'प्राकृतिक संसाधनों का टिकाऊ प्रबंधन' : 'Sustainable management of natural resources'],
               ['12.4', lang === 'hi' ? 'कचरे का जिम्मेदार प्रबंधन' : 'Responsible management of chemicals and waste'],
@@ -281,7 +280,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: '80px 40px', background: 'var(--surface-2)' }}>
+      <section style={{ padding: '80px 20px', background: 'var(--surface-2)' }}>
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ fontSize: '40px', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: '16px' }}>{tr('landing_cta_title')}</h2>
           <p style={{ fontSize: '16px', color: 'var(--text-muted)', marginBottom: '36px' }}>{tr('landing_cta_desc')}</p>
@@ -297,7 +296,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)', padding: '28px 40px' }}>
+      <footer style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)', padding: '28px 20px' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '28px', height: '28px', background: 'var(--accent)', borderRadius: '7px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -321,7 +320,7 @@ function CircularGraphic({ lang }) {
   const icons = ['🪵', '🧵', '📦', '🔩', '♻️', '🌿'];
 
   return (
-    <div style={{ position: 'relative', width: '380px', height: '380px', flexShrink: 0 }}>
+    <div className="circular-graphic" style={{ position: 'relative', flexShrink: 0 }}>
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} className="animate-spin" viewBox="0 0 380 380">
         <circle cx="190" cy="190" r="175" fill="none" stroke="var(--border)" strokeWidth="1" strokeDasharray="8 12" />
       </svg>

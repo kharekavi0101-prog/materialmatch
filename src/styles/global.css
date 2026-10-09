@@ -651,6 +651,101 @@ select option {
 .stagger-5 { animation-delay: 0.25s; }
 .stagger-6 { animation-delay: 0.3s; }
 
+/* ===== APP PAGE RESPONSIVE LAYOUTS ===== */
+
+/* Profile: 2/3 + 1/3 on desktop, stack on mobile */
+.profile-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+/* Dashboard impact summary: 3-col on desktop */
+.dash-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+  .profile-main-grid { grid-template-columns: 1fr; }
+  .dash-impact-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .dash-impact-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== LANDING PAGE RESPONSIVE LAYOUTS ===== */
+
+/* Hero: 2-col on desktop, 1-col on tablet/mobile */
+.landing-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Why section: 2-col on desktop */
+.landing-why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Stats 2×2 inside the Why section */
+.landing-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* SDG targets: 3-col on desktop */
+.landing-sdg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* CircularGraphic: fixed size on desktop, fluid on mobile */
+.circular-graphic {
+  width: 380px;
+  height: 380px;
+}
+
+/* Heading scales */
+.landing-h2 { font-size: clamp(24px, 4vw, 36px); }
+
+@media (max-width: 1024px) {
+  .landing-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  .landing-hero-graphic { order: -1; }
+  .landing-why-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+@media (max-width: 768px) {
+  .landing-hero-grid { gap: 28px; }
+  .landing-sdg-grid { grid-template-columns: 1fr; }
+  .circular-graphic { width: min(300px, 80vw); height: min(300px, 80vw); }
+
+  /* Reduce section padding on mobile */
+  section { padding-top: 56px !important; padding-bottom: 56px !important; }
+}
+
+@media (max-width: 480px) {
+  .landing-stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .landing-login-btn { display: none; }
+  .circular-graphic { width: min(260px, 88vw); height: min(260px, 88vw); }
+
+  /* Compact landing headings */
+  section h2 { font-size: clamp(22px, 6vw, 32px) !important; letter-spacing: -0.5px !important; }
+  section h1 { font-size: clamp(32px, 9vw, 56px) !important; }
+
+  section { padding-top: 40px !important; padding-bottom: 40px !important; }
+}
+
 /* ===== DIVIDER ===== */
 .divider {
   border: none;
@@ -681,6 +776,8 @@ select option {
 .alert-info { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(96,165,250,0.25); }
 
 /* ===== RESPONSIVE ===== */
+
+/* Tablet — ≤1024px */
 @media (max-width: 1024px) {
   .main-content { margin-left: 0; }
   .page-container { padding: 20px 16px; }
@@ -688,16 +785,43 @@ select option {
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* Mobile — ≤768px */
 @media (max-width: 768px) {
   .grid-2 { grid-template-columns: 1fr; }
   .grid-3 { grid-template-columns: 1fr; }
-  .grid-4 { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .form-grid { grid-template-columns: 1fr; }
   .page-title { font-size: 22px; }
   .stat-value { font-size: 28px; }
+  .modal { padding: 20px 16px; }
+  .page-container { padding: 16px 12px; }
+
+  /* Stat cards: 2-up on mobile */
+  .stat-card { padding: 16px 18px; }
+  .stat-icon { width: 30px; height: 30px; top: 12px; right: 12px; }
+
+  /* Chart bar labels: shorter on small screens */
+  .chart-bar-label { width: 90px; font-size: 11px; }
+
+  /* Search bar stretches full width */
+  .search-bar { width: 100%; }
 }
 
+/* Small mobile — ≤480px */
 @media (max-width: 480px) {
+  .grid-4 { grid-template-columns: 1fr 1fr; }
   .tabs { width: 100%; flex-wrap: wrap; }
   .tab { flex: 1; text-align: center; }
+  .page-title { font-size: 20px; }
+  .stat-value { font-size: 24px; }
+  .btn-lg { padding: 12px 20px; font-size: 14px; }
+
+  /* Stack page header actions */
+  .page-header { flex-direction: column; align-items: flex-start !important; }
+}
+
+/* Extra-small — ≤360px */
+@media (max-width: 360px) {
+  .grid-4 { grid-template-columns: 1fr; }
+  .page-container { padding: 12px 10px; }
 }

@@ -54,7 +54,7 @@ export default function ProfilePage() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', alignItems: 'start' }}>
+      <div className="profile-main-grid" style={{ gap: '24px', alignItems: 'start' }}>
         {/* Profile card */}
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
