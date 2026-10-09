@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { Leaf, RotateCcw, Package, Users, TrendingUp } from 'lucide-react';
+import { Leaf, RotateCcw, Package, Users } from 'lucide-react';
 import { getSustainabilityStats, getStore } from '../data/store';
+import { useApp } from '../context/AppContext';
 
 const CATEGORY_ICONS = {
   'Wood': '🪵', 'Metal': '🔩', 'Plastic': '♻️', 'Paper / Cardboard': '📦',
@@ -10,6 +10,7 @@ const CATEGORY_ICONS = {
 };
 
 export default function ImpactPage() {
+  const { tr } = useApp();
   const stats = getSustainabilityStats();
   const store = getStore();
 
@@ -32,17 +33,17 @@ export default function ImpactPage() {
   return (
     <div className="animate-fade-up">
       <div className="page-header">
-        <h1 className="page-title">Sustainability Impact</h1>
-        <p className="page-subtitle">Track collective environmental impact across the MaterialMatch network.</p>
+        <h1 className="page-title">{tr('impact_title')}</h1>
+        <p className="page-subtitle">{tr('impact_subtitle')}</p>
       </div>
 
       {/* Top stats */}
       <div className="grid-4" style={{ marginBottom: '28px' }}>
         {[
-          { label: 'Total Material Reused', value: `${stats.wasteDiverted} kg`, icon: <Leaf size={18} />, color: 'var(--accent)' },
-          { label: 'Successful Exchanges', value: stats.successfulExchanges, icon: <RotateCcw size={18} />, color: 'var(--green)' },
-          { label: 'Active Organizations', value: stats.activeOrganizations, icon: <Users size={18} />, color: 'var(--blue)' },
-          { label: 'Materials Listed', value: stats.materialsListed, icon: <Package size={18} />, color: 'var(--yellow)' },
+          { label: tr('impact_total_reused'), value: `${stats.wasteDiverted} kg`, icon: <Leaf size={18} />, color: 'var(--accent)' },
+          { label: tr('impact_successful'), value: stats.successfulExchanges, icon: <RotateCcw size={18} />, color: 'var(--green)' },
+          { label: tr('impact_active_orgs'), value: stats.activeOrganizations, icon: <Users size={18} />, color: 'var(--blue)' },
+          { label: tr('impact_listed'), value: stats.materialsListed, icon: <Package size={18} />, color: 'var(--yellow)' },
         ].map((s, i) => (
           <div key={s.label} className={`stat-card animate-fade-up stagger-${i + 1}`} style={{ '--accent': s.color }}>
             <div className="stat-icon" style={{ background: `${s.color}20`, color: s.color }}>
@@ -83,10 +84,10 @@ export default function ImpactPage() {
       <div className="grid-2" style={{ alignItems: 'start', marginBottom: '24px' }}>
         {/* By category */}
         <div className="card">
-          <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>Waste Diverted by Category</h3>
+          <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>{tr('impact_by_category')}</h3>
           {catData.length === 0 ? (
             <div className="empty-state" style={{ padding: '20px' }}>
-              <p>No completed exchanges yet.</p>
+              <p>{tr('impact_no_exchanges')}</p>
             </div>
           ) : (
             <div className="chart-bar-container">
@@ -107,10 +108,10 @@ export default function ImpactPage() {
 
         {/* Monthly exchanges */}
         <div className="card">
-          <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>Exchanges per Month</h3>
+          <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>{tr('impact_by_month')}</h3>
           {monthData.length === 0 ? (
             <div className="empty-state" style={{ padding: '20px' }}>
-              <p>No exchange history yet.</p>
+              <p>{tr('impact_no_exchanges')}</p>
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '140px', padding: '10px 0' }}>
@@ -138,7 +139,7 @@ export default function ImpactPage() {
 
       {/* Top organizations */}
       <div className="card" style={{ marginBottom: '24px' }}>
-        <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>Top Organizations — Waste Diverted</h3>
+        <h3 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '20px' }}>{tr('impact_top_orgs')}</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {topOrgs.map((org, i) => (
             <div key={org.id} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -179,11 +180,11 @@ export default function ImpactPage() {
           <div style={{ fontSize: '40px' }}>🌍</div>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontWeight: 700, fontSize: '16px', color: 'var(--accent)', marginBottom: '6px' }}>
-              Aligned with SDG 12 — Responsible Consumption and Production
-            </h3>
-            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              Every exchange on MaterialMatch contributes to reducing waste, promoting reuse, and building circular resource systems in line with the United Nations Sustainable Development Goals.
-            </p>
+                {tr('impact_sdg_title')}
+              </h3>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                {tr('impact_sdg_desc')}
+              </p>
           </div>
         </div>
       </div>

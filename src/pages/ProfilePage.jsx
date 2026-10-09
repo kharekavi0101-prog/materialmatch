@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Edit3, Save, X, Package, CheckCircle, Leaf } from 'lucide-react';
+import { Edit3, Save, X, Package, CheckCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { getOrgStats, getMaterials, getOrg, updateOrg } from '../data/store';
+import { getOrgStats, getMaterials, updateOrg } from '../data/store';
 
 const ORG_TYPES = ['Workshop', 'NGO', 'Business', 'Institution', 'Event Organizer', 'Community Group', 'Makerspace', 'Repair Group', 'Other'];
 
 export default function ProfilePage() {
-  const { currentUser, refresh } = useApp();
+  const { currentUser, refresh, tr } = useApp();
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
     name: currentUser?.name || '',
@@ -44,13 +44,13 @@ export default function ProfilePage() {
   return (
     <div className="animate-fade-up">
       <div className="page-header">
-        <h1 className="page-title">Organization Profile</h1>
-        <p className="page-subtitle">Your organization's information and sustainability record.</p>
+        <h1 className="page-title">{tr('profile_title')}</h1>
+        <p className="page-subtitle">{tr('profile_subtitle')}</p>
       </div>
 
       {saved && (
         <div className="alert alert-success" style={{ marginBottom: '20px' }}>
-          <CheckCircle size={16} /> Profile updated successfully!
+          <CheckCircle size={16} /> {tr('profile_saved')}
         </div>
       )}
 
@@ -75,7 +75,7 @@ export default function ProfilePage() {
             </div>
             {!editing && (
               <button className="btn btn-secondary btn-sm" onClick={() => setEditing(true)}>
-                <Edit3 size={14} /> Edit Profile
+                <Edit3 size={14} /> {tr('profile_edit')}
               </button>
             )}
           </div>
@@ -84,41 +84,41 @@ export default function ProfilePage() {
             <div>
               <div className="form-grid">
                 <div className="form-group">
-                  <label className="form-label">Organization Name</label>
-                  <input name="name" value={form.name} onChange={handle} />
+                    <label className="form-label">{tr('profile_org_name')}</label>
+                    <input name="name" value={form.name} onChange={handle} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">{tr('profile_org_type')}</label>
+                    <select name="type" value={form.type} onChange={handle}>
+                      {ORG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">{tr('profile_contact')}</label>
+                    <input name="contact" value={form.contact} onChange={handle} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">{tr('profile_city')}</label>
+                    <input name="city" value={form.city} onChange={handle} />
+                  </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Organization Type</label>
-                  <select name="type" value={form.type} onChange={handle}>
-                    {ORG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Contact Person</label>
-                  <input name="contact" value={form.contact} onChange={handle} />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">City</label>
-                  <input name="city" value={form.city} onChange={handle} />
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="form-label">Description</label>
+                  <label className="form-label">{tr('profile_description')}</label>
                 <textarea name="description" value={form.description} onChange={handle} rows={3} style={{ resize: 'vertical' }} />
               </div>
               <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-                <button className="btn btn-ghost btn-sm" onClick={cancel}><X size={14} /> Cancel</button>
-                <button className="btn btn-primary btn-sm" onClick={save}><Save size={14} /> Save Changes</button>
+                <button className="btn btn-ghost btn-sm" onClick={cancel}><X size={14} /> {tr('profile_cancel')}</button>
+                <button className="btn btn-primary btn-sm" onClick={save}><Save size={14} /> {tr('profile_save')}</button>
               </div>
             </div>
           ) : (
             <div>
               <div className="form-grid" style={{ marginBottom: '16px' }}>
                 {[
-                  { label: 'Contact Person', value: currentUser.contact },
-                  { label: 'Email', value: currentUser.email },
-                  { label: 'City', value: currentUser.city },
-                  { label: 'Member Since', value: currentUser.joinedAt },
+                  { label: tr('profile_contact'), value: currentUser.contact },
+                  { label: tr('profile_email'), value: currentUser.email },
+                  { label: tr('profile_city'), value: currentUser.city },
+                  { label: tr('profile_since'), value: currentUser.joinedAt },
                 ].map(item => (
                   <div key={item.label} style={{ marginBottom: '12px' }}>
                     <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '3px' }}>{item.label}</div>
@@ -128,7 +128,7 @@ export default function ProfilePage() {
               </div>
               {currentUser.description && (
                 <div style={{ padding: '14px', background: 'var(--surface-2)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>About</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>{tr('profile_about')}</div>
                   <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.7' }}>{currentUser.description}</p>
                 </div>
               )}
@@ -141,13 +141,13 @@ export default function ProfilePage() {
           {/* Impact stats */}
           <div className="card">
             <h3 style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '16px' }}>
-              Impact Summary
+              {tr('profile_impact')}
             </h3>
             {[
-              { label: 'Materials Listed', value: stats.totalMaterials, color: 'var(--accent)' },
-              { label: 'Materials Received', value: stats.materialsReceived, color: 'var(--blue)' },
-              { label: 'Completed Exchanges', value: stats.successfulExchanges, color: 'var(--green)' },
-              { label: 'Waste Diverted', value: `${stats.wasteDiverted} kg`, color: 'var(--yellow)' },
+              { label: tr('profile_total_listed'), value: stats.totalMaterials, color: 'var(--accent)' },
+              { label: tr('profile_received'), value: stats.materialsReceived, color: 'var(--blue)' },
+              { label: tr('profile_completed'), value: stats.successfulExchanges, color: 'var(--green)' },
+              { label: tr('profile_waste'), value: `${stats.wasteDiverted} kg`, color: 'var(--yellow)' },
             ].map(s => (
               <div key={s.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--border-light)' }}>
                 <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{s.label}</span>
@@ -159,8 +159,8 @@ export default function ProfilePage() {
           {/* SDG Badge */}
           <div className="card" style={{ background: 'var(--accent-dim)', border: '1px solid var(--glass-border)', textAlign: 'center', padding: '20px' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>🌍</div>
-            <div style={{ fontWeight: 700, color: 'var(--accent)', fontSize: '14px', marginBottom: '4px' }}>SDG 12 Contributor</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Responsible Consumption & Production</div>
+            <div style={{ fontWeight: 700, color: 'var(--accent)', fontSize: '14px', marginBottom: '4px' }}>{tr('profile_sdg_badge')}</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{tr('profile_sdg_sub')}</div>
           </div>
         </div>
       </div>
@@ -168,15 +168,15 @@ export default function ProfilePage() {
       {/* My materials */}
       <div className="card" style={{ marginTop: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h3 style={{ fontWeight: 700, fontSize: '16px' }}>My Material Listings</h3>
-          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{myMaterials.length} total</span>
+          <h3 style={{ fontWeight: 700, fontSize: '16px' }}>{tr('profile_my_materials')}</h3>
+          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{myMaterials.length} {tr('profile_total')}</span>
         </div>
 
         {myMaterials.length === 0 ? (
           <div className="empty-state" style={{ padding: '30px' }}>
-            <Package size={32} />
-            <p>No materials listed yet.</p>
-          </div>
+          <Package size={32} />
+          <p>{tr('profile_no_materials')}</p>
+        </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
             {myMaterials.map(mat => (

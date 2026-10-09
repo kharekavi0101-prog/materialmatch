@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter, X, MapPin, Package } from 'lucide-react';
 import { getMaterials, getOrg } from '../data/store';
+import { useApp } from '../context/AppContext';
 
 const CATEGORIES = ['All', 'Wood', 'Metal', 'Plastic', 'Paper / Cardboard', 'Textile', 'Glass', 'Organic Material', 'Construction Material', 'Packaging Material', 'Electronics', 'Mixed / Other'];
 
@@ -13,6 +14,7 @@ const CATEGORY_ICONS = {
 };
 
 export default function Marketplace() {
+  const { tr } = useApp();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
@@ -32,8 +34,8 @@ export default function Marketplace() {
   return (
     <div className="animate-fade-up">
       <div className="page-header">
-        <h1 className="page-title">Material Marketplace</h1>
-        <p className="page-subtitle">Browse surplus materials available for reuse. Every material here is a resource, not waste.</p>
+        <h1 className="page-title">{tr('market_title')}</h1>
+        <p className="page-subtitle">{tr('market_subtitle')}</p>
       </div>
 
       {/* Filters */}
@@ -43,7 +45,7 @@ export default function Marketplace() {
             <Search size={16} color="var(--text-muted)" />
             <input
               value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Search materials, organizations, cities..."
+              placeholder={tr('market_search_placeholder')}
             />
             {search && (
               <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', padding: '0', cursor: 'pointer' }}>
@@ -64,7 +66,7 @@ export default function Marketplace() {
             onClick={() => setAvailOnly(!availOnly)}
           >
             <Filter size={14} />
-            {availOnly ? 'Available Only ✓' : 'All Status'}
+            {availOnly ? tr('market_available_only') : tr('market_all_status')}
           </button>
         </div>
       </div>
@@ -90,16 +92,16 @@ export default function Marketplace() {
 
       {/* Count */}
       <div style={{ marginBottom: '16px', fontSize: '14px', color: 'var(--text-muted)' }}>
-        Showing <strong style={{ color: 'var(--text)' }}>{filtered.length}</strong> material{filtered.length !== 1 ? 's' : ''}
-        {category !== 'All' && <span> in <strong style={{ color: 'var(--accent)' }}>{category}</strong></span>}
+        {tr('market_showing')} <strong style={{ color: 'var(--text)' }}>{filtered.length}</strong> {filtered.length !== 1 ? tr('market_materials') : tr('market_material')}
+        {category !== 'All' && <span> {tr('market_in')} <strong style={{ color: 'var(--accent)' }}>{category}</strong></span>}
       </div>
 
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="empty-state">
           <Package size={48} />
-          <h3>No materials found</h3>
-          <p>Try adjusting your search or filters.</p>
+          <h3>{tr('market_no_results')}</h3>
+          <p>{tr('market_no_results_desc')}</p>
         </div>
       ) : (
         <div className="grid-auto">
@@ -113,6 +115,7 @@ export default function Marketplace() {
 }
 
 function MaterialCard({ mat, index, onClick }) {
+  const { tr } = useApp();
   const org = getOrg(mat.orgId);
   const icon = CATEGORY_ICONS[mat.category] || '🔄';
 
@@ -145,11 +148,11 @@ function MaterialCard({ mat, index, onClick }) {
       {/* Metadata */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', fontSize: '12px' }}>
         <div style={{ background: 'var(--surface-2)', borderRadius: '6px', padding: '6px 8px' }}>
-          <div style={{ color: 'var(--text-muted)' }}>Quantity</div>
+          <div style={{ color: 'var(--text-muted)' }}>{tr('market_quantity')}</div>
           <div style={{ fontWeight: 700, color: 'var(--accent)' }}>{mat.quantity} {mat.unit}</div>
         </div>
         <div style={{ background: 'var(--surface-2)', borderRadius: '6px', padding: '6px 8px' }}>
-          <div style={{ color: 'var(--text-muted)' }}>Condition</div>
+          <div style={{ color: 'var(--text-muted)' }}>{tr('market_condition')}</div>
           <div style={{ fontWeight: 600, color: 'var(--text)' }}>{mat.condition.split('/')[0].trim()}</div>
         </div>
       </div>
@@ -163,13 +166,13 @@ function MaterialCard({ mat, index, onClick }) {
           </div>
         </div>
         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-          {mat.pickupRequired ? '🚗 Pickup' : '📦 Flexible'}
-        </div>
+        {mat.pickupRequired ? `🚗 ${tr('market_pickup')}` : `📦 ${tr('market_flexible')}`}
       </div>
+    </div>
 
-      <button className="btn btn-secondary btn-sm" style={{ width: '100%', justifyContent: 'center' }}>
-        View Material →
-      </button>
+    <button className="btn btn-secondary btn-sm" style={{ width: '100%', justifyContent: 'center' }}>
+      {tr('market_view')}
+    </button>
     </div>
   );
 }

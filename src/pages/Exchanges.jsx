@@ -4,7 +4,7 @@ import { getExchanges, updateExchangeStatus, getOrg, getMaterial } from '../data
 import { useApp } from '../context/AppContext';
 
 export default function Exchanges() {
-  const { currentUser, refresh } = useApp();
+  const { currentUser, refresh, tr } = useApp();
   const [activeTab, setActiveTab] = useState('pending');
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -28,7 +28,7 @@ export default function Exchanges() {
     const result = updateExchangeStatus(excId, action);
     if (result?.error) { setError(result.error); return; }
     refresh();
-    const msg = action === 'accepted' ? 'Request accepted!' : action === 'rejected' ? 'Request rejected.' : action === 'completed' ? '✅ Exchange marked complete! Quantity updated.' : '';
+    const msg = action === 'accepted' ? tr('exc_accepted_msg') : action === 'rejected' ? tr('exc_rejected_msg') : action === 'completed' ? tr('exc_completed_msg') : '';
     setSuccessMsg(msg);
     setTimeout(() => setSuccessMsg(''), 3500);
   };
@@ -36,8 +36,8 @@ export default function Exchanges() {
   return (
     <div className="animate-fade-up">
       <div className="page-header">
-        <h1 className="page-title">Exchanges</h1>
-        <p className="page-subtitle">Manage material exchange requests — incoming and outgoing.</p>
+        <h1 className="page-title">{tr('exc_title')}</h1>
+        <p className="page-subtitle">{tr('exc_subtitle')}</p>
       </div>
 
       {error && <div className="alert alert-error" style={{ marginBottom: '16px' }}><AlertCircle size={16} /> {error}</div>}
@@ -45,10 +45,10 @@ export default function Exchanges() {
 
       <div className="tabs">
         {[
-          { key: 'pending', label: 'Pending', count: tabs.pending.length },
-          { key: 'accepted', label: 'Active', count: tabs.accepted.length },
-          { key: 'completed', label: 'Completed', count: tabs.completed.length },
-          { key: 'rejected', label: 'Rejected', count: tabs.rejected.length },
+          { key: 'pending', label: tr('exc_tab_pending'), count: tabs.pending.length },
+          { key: 'accepted', label: tr('exc_tab_active'), count: tabs.accepted.length },
+          { key: 'completed', label: tr('exc_tab_completed'), count: tabs.completed.length },
+          { key: 'rejected', label: tr('exc_tab_rejected'), count: tabs.rejected.length },
         ].map(t => (
           <button
             key={t.key}
@@ -74,8 +74,8 @@ export default function Exchanges() {
       {tabs[activeTab].length === 0 ? (
         <div className="empty-state">
           <Clock size={48} />
-          <h3>No {activeTab} exchanges</h3>
-          <p>Exchanges in this status will appear here.</p>
+          <h3>{tr('exc_no_exchanges')}</h3>
+          <p>{tr('exc_no_exchanges_desc')}</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -94,6 +94,7 @@ export default function Exchanges() {
 }
 
 function ExchangeCard({ exc, currentUserId, onAction }) {
+  const { tr } = useApp();
   const supplier = getOrg(exc.supplierId);
   const requester = getOrg(exc.requesterId);
   const isSupplier = currentUserId === exc.supplierId;
@@ -130,21 +131,21 @@ function ExchangeCard({ exc, currentUserId, onAction }) {
           )}
 
           <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: 'var(--text-muted)', flexWrap: 'wrap' }}>
-            <span>📅 Requested: {exc.createdAt}</span>
-            {exc.preferredPickup && <span>🚗 Pickup: {exc.preferredPickup}</span>}
-            {exc.completedAt && <span style={{ color: 'var(--green)', fontWeight: 600 }}>✅ Completed: {exc.completedAt}</span>}
-          </div>
+          <span>📅 {tr('exc_requested')} {exc.createdAt}</span>
+          {exc.preferredPickup && <span>🚗 {tr('exc_pickup')} {exc.preferredPickup}</span>}
+          {exc.completedAt && <span style={{ color: 'var(--green)', fontWeight: 600 }}>✅ {tr('exc_completed_on')} {exc.completedAt}</span>}
+        </div>
 
-          {/* Role indicator */}
-          <div style={{ marginTop: '10px', fontSize: '12px' }}>
-            <span style={{
-              padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
-              background: isSupplier ? 'var(--yellow-dim)' : 'var(--blue-dim)',
-              color: isSupplier ? 'var(--yellow)' : 'var(--blue)',
-              border: `1px solid ${isSupplier ? 'rgba(251,191,36,0.25)' : 'rgba(96,165,250,0.25)'}`,
-            }}>
-              {isSupplier ? '⬆ You are the Supplier' : '⬇ You requested this'}
-            </span>
+        {/* Role indicator */}
+        <div style={{ marginTop: '10px', fontSize: '12px' }}>
+          <span style={{
+            padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
+            background: isSupplier ? 'var(--yellow-dim)' : 'var(--blue-dim)',
+            color: isSupplier ? 'var(--yellow)' : 'var(--blue)',
+            border: `1px solid ${isSupplier ? 'rgba(251,191,36,0.25)' : 'rgba(96,165,250,0.25)'}`,
+          }}>
+            {isSupplier ? tr('exc_you_supplier') : tr('exc_you_requester')}
+          </span>
           </div>
         </div>
 
@@ -154,24 +155,21 @@ function ExchangeCard({ exc, currentUserId, onAction }) {
           {isSupplier && exc.status === 'pending' && (
             <>
               <button className="btn btn-success btn-sm" onClick={() => onAction(exc.id, 'accepted')} style={{ justifyContent: 'center' }}>
-                <CheckCircle size={14} /> Accept
+                <CheckCircle size={14} /> {tr('exc_accept')}
               </button>
               <button className="btn btn-danger btn-sm" onClick={() => onAction(exc.id, 'rejected')} style={{ justifyContent: 'center' }}>
-                <XCircle size={14} /> Reject
+                <XCircle size={14} /> {tr('exc_reject')}
               </button>
             </>
           )}
-
-          {/* Supplier can complete accepted exchanges */}
           {isSupplier && exc.status === 'accepted' && (
             <button className="btn btn-primary btn-sm" onClick={() => onAction(exc.id, 'completed')} style={{ justifyContent: 'center' }}>
-              <CheckCircle size={14} /> Mark Complete
+              <CheckCircle size={14} /> {tr('exc_complete')}
             </button>
           )}
-
           {exc.status === 'completed' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--green)', fontSize: '13px', fontWeight: 600 }}>
-              <CheckCircle size={16} /> Exchange Completed
+              <CheckCircle size={16} /> {tr('exc_done')}
             </div>
           )}
         </div>

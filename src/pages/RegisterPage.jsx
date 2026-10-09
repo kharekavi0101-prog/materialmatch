@@ -7,7 +7,7 @@ import { useApp } from '../context/AppContext';
 const ORG_TYPES = ['Workshop', 'NGO', 'Business', 'Institution', 'Event Organizer', 'Community Group', 'Makerspace', 'Repair Group', 'Other'];
 
 export default function RegisterPage() {
-  const { setCurrentUser, refresh } = useApp();
+  const { setCurrentUser, refresh, tr } = useApp();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '', type: '', contact: '', email: '', password: '', city: '', description: '',
@@ -73,39 +73,39 @@ export default function RegisterPage() {
           <form onSubmit={submit}>
             <div className="form-grid">
               <div className="form-group">
-                <label className="form-label">Organization Name *</label>
+                <label className="form-label">{tr('register_org_name')} *</label>
                 <input name="name" value={form.name} onChange={handle} placeholder="e.g. UrbanCraft Workshop" />
               </div>
               <div className="form-group">
-                <label className="form-label">Organization Type *</label>
+                <label className="form-label">{tr('register_org_type')} *</label>
                 <select name="type" value={form.type} onChange={handle}>
-                  <option value="">Select type...</option>
+                  <option value="">{tr('register_select_type')}</option>
                   {ORG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div className="form-group">
-                <label className="form-label">Contact Person *</label>
+                <label className="form-label">{tr('register_contact')} *</label>
                 <input name="contact" value={form.contact} onChange={handle} placeholder="Your name" />
               </div>
               <div className="form-group">
-                <label className="form-label">City *</label>
+                <label className="form-label">{tr('register_city')} *</label>
                 <input name="city" value={form.city} onChange={handle} placeholder="e.g. Delhi" />
               </div>
               <div className="form-group">
-                <label className="form-label">Email Address *</label>
+                <label className="form-label">{tr('register_email')} *</label>
                 <input type="email" name="email" value={form.email} onChange={handle} placeholder="org@example.com" />
               </div>
               <div className="form-group">
-                <label className="form-label">Password *</label>
+                <label className="form-label">{tr('register_password')} *</label>
                 <input type="password" name="password" value={form.password} onChange={handle} placeholder="Min 6 characters" />
               </div>
             </div>
 
             <div className="form-group">
-              <label className="form-label">Short Description</label>
+              <label className="form-label">{tr('register_description')}</label>
               <textarea
                 name="description" value={form.description} onChange={handle}
-                placeholder="What does your organization do? What materials do you typically generate or need?"
+                placeholder={tr('register_desc_placeholder')}
                 rows={3}
                 style={{ resize: 'vertical' }}
               />
@@ -114,9 +114,9 @@ export default function RegisterPage() {
             {/* What you get */}
             <div style={{ background: 'var(--surface-2)', borderRadius: '8px', padding: '14px', marginBottom: '20px', border: '1px solid var(--border)' }}>
               <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Joining gives you access to:
+                {tr('register_joining')}
               </div>
-              {['Post surplus materials for free', 'Request materials from other organizations', 'Track your sustainability impact', 'Connect with 14+ organizations'].map(item => (
+              {[tr('register_benefit1'), tr('register_benefit2'), tr('register_benefit3'), tr('register_benefit4')].map(item => (
                 <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', fontSize: '13px', color: 'var(--text-secondary)' }}>
                   <CheckCircle size={13} color="var(--green)" /> {item}
                 </div>
@@ -124,14 +124,14 @@ export default function RegisterPage() {
             </div>
 
             <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading}>
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? tr('register_creating') : tr('register_btn')}
             </button>
           </form>
         </div>
 
         <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px', color: 'var(--text-muted)' }}>
-          Already have an account?{' '}
-          <Link to="/login" style={{ color: 'var(--accent)', fontWeight: 600 }}>Sign In</Link>
+          {tr('register_already')}{' '}
+          <Link to="/login" style={{ color: 'var(--accent)', fontWeight: 600 }}>{tr('register_login_link')}</Link>
         </p>
       </div>
     </div>

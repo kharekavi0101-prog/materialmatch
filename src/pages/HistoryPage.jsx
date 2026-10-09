@@ -1,9 +1,8 @@
-import { ArrowRight } from 'lucide-react';
 import { getExchanges, getOrg } from '../data/store';
 import { useApp } from '../context/AppContext';
 
 export default function HistoryPage() {
-  const { currentUser } = useApp();
+  const { currentUser, tr } = useApp();
   const allExchanges = getExchanges();
 
   // All exchanges sorted by most recent
@@ -20,15 +19,15 @@ export default function HistoryPage() {
   return (
     <div className="animate-fade-up">
       <div className="page-header">
-        <h1 className="page-title">Exchange History</h1>
-        <p className="page-subtitle">A complete timeline of material exchanges across the network.</p>
+        <h1 className="page-title">{tr('history_title')}</h1>
+        <p className="page-subtitle">{tr('history_subtitle')}</p>
       </div>
 
       <div className="card">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
           {history.length === 0 ? (
             <div className="empty-state" style={{ padding: '40px' }}>
-              <p>No exchange history yet.</p>
+              <p>{tr('history_no_history')}</p>
             </div>
           ) : (
             history.map((exc, i) => {
@@ -79,8 +78,8 @@ export default function HistoryPage() {
                           {exc.completedAt || exc.createdAt}
                         </span>
                         {isMyExchange && (
-                          <span style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 600 }}>Your exchange</span>
-                        )}
+                            <span style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 600 }}>{tr('history_your_exchange')}</span>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -96,10 +95,10 @@ export default function HistoryPage() {
         <div className="card" style={{ marginTop: '20px', background: 'var(--surface-2)' }}>
           <div style={{ display: 'flex', gap: '28px', flexWrap: 'wrap' }}>
             {[
-              { label: 'Total Exchanges', value: history.length },
-              { label: 'Completed', value: history.filter(e => e.status === 'completed').length },
-              { label: 'Active', value: history.filter(e => e.status === 'accepted').length },
-              { label: 'Pending', value: history.filter(e => e.status === 'pending').length },
+              { label: tr('history_total'), value: history.length },
+                { label: tr('history_completed'), value: history.filter(e => e.status === 'completed').length },
+                { label: tr('history_active'), value: history.filter(e => e.status === 'accepted').length },
+                { label: tr('history_pending'), value: history.filter(e => e.status === 'pending').length },
             ].map(s => (
               <div key={s.label} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '24px', fontWeight: 900, color: 'var(--accent)', letterSpacing: '-1px' }}>{s.value}</div>
